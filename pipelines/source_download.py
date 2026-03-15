@@ -19,14 +19,17 @@ def download_all_files(urls, source_dir):
     with open(input_file, 'w') as f:
         for url in urls:
             f.write(f'{url}\n')
-            filename = Path(url.split('?')[0]).name
+            if 'FILENAME=' in url: # WMS e.g IGN
+                filename = url.split('FILENAME=')[1].split('&')[0]
+            else:
+                filename = Path(url.split('?')[0]).name
             expected_files.append(source_dir / filename)
 
     print(f'Starting download of {len(urls)} file(s)...\n')
 
     try:
         command = (
-            f'wget --quiet --continue --input-file "{input_file}" '
+            f'wget --quiet --content-disposition --input-file "{input_file}" '
             f'--directory-prefix "{source_dir}" --tries 3 --timeout 60'
         )
 
