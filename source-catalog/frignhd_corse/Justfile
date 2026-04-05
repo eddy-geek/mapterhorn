@@ -1,0 +1,6 @@
+[no-cd]
+default:
+    uv run python source_download.py frignhd_corse
+    uv run python source_bounds.py frignhd_corse
+    uv run python source_polygonize.py frignhd_corse 32
+    uv run python source_create_tarball.py frignhd_corse
